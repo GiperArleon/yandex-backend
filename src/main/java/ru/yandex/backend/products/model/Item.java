@@ -2,15 +2,12 @@ package ru.yandex.backend.products.model;
 
 import lombok.NoArgsConstructor;
 import ru.yandex.backend.products.model.enums.ShopUnitType;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Entity
 @Data
@@ -50,10 +47,11 @@ public class Item {
         this.parentId = parentId;
         this.itemType = itemType;
         this.itemPrice = itemPrice;
-        if(this.itemType==ShopUnitType.OFFER) {
-            childrens = null;
-        } else {
-            childrens = new ArrayList<>();
-        }
+    }
+
+    public Stream<Item> getFlatChildrens() {
+        return Stream.concat(
+                Stream.of(this),
+                childrens.stream().flatMap(Item::getFlatChildrens));
     }
 }

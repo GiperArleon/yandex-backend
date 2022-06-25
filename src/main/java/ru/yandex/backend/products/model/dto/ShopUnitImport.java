@@ -3,7 +3,6 @@ package ru.yandex.backend.products.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.yandex.backend.products.model.enums.ShopUnitType;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.UUID;

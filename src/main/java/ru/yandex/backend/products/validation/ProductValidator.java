@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class ProductValidator {
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE_TIME;  //ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);  DateTimeFormatter.ISO_INSTANT
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_DATE_TIME; //ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);  DateTimeFormatter.ISO_INSTANT  ISO_DATE_TIME
 
     public void validateShopUnitImportRequest(ShopUnitImportRequest shopUnitImportRequest) {
         if(shopUnitImportRequest == null
