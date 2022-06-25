@@ -20,7 +20,7 @@ public class ProductValidator {
 
     public void validDateTime(String dateStr) {
         try {
-            this.dateFormatter.parse(dateStr);
+            dateFormatter.parse(dateStr);
         } catch (DateTimeParseException e) {
             throw new ValidationException("Invalid date");
         }

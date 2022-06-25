@@ -1,14 +1,17 @@
 package ru.yandex.backend.products.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.backend.products.model.dto.GeneralResponse;
 import ru.yandex.backend.products.model.dto.ShopUnit;
 import ru.yandex.backend.products.model.dto.ShopUnitImportRequest;
+import ru.yandex.backend.products.model.dto.ShopUnitStatisticResponse;
 import ru.yandex.backend.products.service.ProductsService;
-import javax.validation.Valid;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
@@ -25,7 +28,7 @@ public class ProductsController {
     }
 
     @PostMapping("/imports")
-    public ResponseEntity<GeneralResponse> importProducts(@Valid @RequestBody ShopUnitImportRequest shopUnitImportRequest) {
+    public ResponseEntity<GeneralResponse> importProducts(@RequestBody ShopUnitImportRequest shopUnitImportRequest) {
         productsService.saveProducts(shopUnitImportRequest);
         return ResponseEntity.ok(GeneralResponse.getResponse(
                 "Imports done successfully",
@@ -43,6 +46,13 @@ public class ProductsController {
         return ResponseEntity.ok(GeneralResponse.getResponse(
                 "Delete done successfully",
                 HttpStatus.OK));
+    }
+
+    @GetMapping("/sales")
+    public ResponseEntity<ShopUnitStatisticResponse> findSalesByDate(@RequestParam(required = false)
+                                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                                     LocalDateTime date) {
+        return ResponseEntity.ok(productsService.findSalesByDate(date));
     }
 }
 

@@ -8,8 +8,11 @@ import ru.yandex.backend.products.mapper.ProductsMapper;
 import ru.yandex.backend.products.model.Item;
 import ru.yandex.backend.products.model.dto.ShopUnit;
 import ru.yandex.backend.products.model.dto.ShopUnitImportRequest;
+import ru.yandex.backend.products.model.dto.ShopUnitStatisticResponse;
 import ru.yandex.backend.products.repository.ProductsRepository;
 import ru.yandex.backend.products.validation.ProductValidator;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -39,5 +42,15 @@ public class ProductsServiceImpl implements ProductsService {
     public void deleteProductById(UUID id) {
         getProductById(id);
         productsRepository.deleteById(id);
+    }
+
+    @Override
+    public ShopUnitStatisticResponse findSalesByDate(LocalDateTime to) {
+        if(to == null) {
+            to = LocalDateTime.now();
+        }
+        LocalDateTime from = to.minusDays(1);
+        List<Item> items = productsRepository.findSalesByUpdateTime(from, to);
+        return productsMapper.shopUnitStatisticResponseFromItems(items);
     }
 }

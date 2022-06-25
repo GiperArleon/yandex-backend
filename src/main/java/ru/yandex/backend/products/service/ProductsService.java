@@ -2,7 +2,8 @@ package ru.yandex.backend.products.service;
 
 import ru.yandex.backend.products.model.dto.ShopUnit;
 import ru.yandex.backend.products.model.dto.ShopUnitImportRequest;
-
+import ru.yandex.backend.products.model.dto.ShopUnitStatisticResponse;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface ProductsService {
@@ -11,4 +12,6 @@ public interface ProductsService {
     ShopUnit getProductById(UUID id);
 
     void deleteProductById(UUID id);
+
+    ShopUnitStatisticResponse findSalesByDate(LocalDateTime updateTime);
 }

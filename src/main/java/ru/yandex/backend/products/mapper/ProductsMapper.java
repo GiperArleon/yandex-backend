@@ -1,9 +1,7 @@
 package ru.yandex.backend.products.mapper;
 
 import ru.yandex.backend.products.model.Item;
-import ru.yandex.backend.products.model.dto.ShopUnit;
-import ru.yandex.backend.products.model.dto.ShopUnitImport;
-import ru.yandex.backend.products.model.dto.ShopUnitImportRequest;
+import ru.yandex.backend.products.model.dto.*;
 import ru.yandex.backend.products.model.enums.ShopUnitType;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -76,5 +74,23 @@ public class ProductsMapper {
                 .max(LocalDateTime::compareTo).orElse(item.getUpdateTime());
         item.setUpdateTime(oldestDate);
         return item;
+    }
+
+    private ShopUnitStatisticUnit shopUnitStatisticUnitFromItem(Item item) {
+        return new ShopUnitStatisticUnit(
+                item.getItemId(),
+                item.getItemName(),
+                item.getParentId(),
+                item.getItemType(),
+                item.getItemPrice(),
+                item.getUpdateTime()
+                );
+     }
+
+    public ShopUnitStatisticResponse shopUnitStatisticResponseFromItems(List<Item> items) {
+        List<ShopUnitStatisticUnit> itemsRes = items.stream()
+                .map(this::shopUnitStatisticUnitFromItem)
+                .collect(Collectors.toList());
+        return new ShopUnitStatisticResponse(itemsRes);
     }
 }
