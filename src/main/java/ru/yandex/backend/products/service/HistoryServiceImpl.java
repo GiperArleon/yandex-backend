@@ -1,7 +1,6 @@
 package ru.yandex.backend.products.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.backend.products.mapper.HistoryMapper;
@@ -12,12 +11,13 @@ import ru.yandex.backend.products.model.dto.ShopUnitImportRequest;
 import ru.yandex.backend.products.model.dto.ShopUnitStatisticResponse;
 import ru.yandex.backend.products.repository.HistoryRepository;
 import ru.yandex.backend.products.repository.ProductsRepository;
+import ru.yandex.backend.products.validation.ProductValidator;
+
 import java.time.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -26,9 +26,11 @@ public class HistoryServiceImpl implements HistoryService {
     private final HistoryRepository historyRepository;
     private final HistoryMapper historyMapper;
     private final ProductsMapper productsMapper;
+    private final ProductValidator productValidator;
 
     @Override
     public void saveProductsHistory(ShopUnitImportRequest shopUnitImportRequest) {
+        productValidator.validateShopUnitImportRequest(shopUnitImportRequest);
         shopUnitImportRequest.getItems().forEach(v->{
             Optional<Item> item = productsRepository.findById(v.getId());
             item.ifPresent(c-> {
