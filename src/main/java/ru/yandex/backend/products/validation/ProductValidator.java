@@ -39,7 +39,7 @@ public class ProductValidator {
     public void validateShopUnitImportNameSize(String name) {
         if(name.isEmpty()
                 || name.length() > NAME_MAX_SIZE) {
-            throw new ValidationException("name should be from 1 to 100 characters long");
+            throw new ValidationException("Name should be from 1 to 100 characters long");
         }
     }
 
