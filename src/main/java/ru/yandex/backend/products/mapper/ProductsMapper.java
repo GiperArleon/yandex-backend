@@ -1,15 +1,21 @@
 package ru.yandex.backend.products.mapper;
 
+import lombok.RequiredArgsConstructor;
 import ru.yandex.backend.products.model.Item;
 import ru.yandex.backend.products.model.dto.*;
 import ru.yandex.backend.products.model.enums.ShopUnitType;
+import ru.yandex.backend.products.validation.ProductValidator;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class ProductsMapper extends RootMapper {
+
+    private final ProductValidator productValidator;
 
     public Item itemFromShopUnitImport(ShopUnitImport shopUnitImport, ZonedDateTime updateTime) {
         return new Item(
@@ -26,6 +32,7 @@ public class ProductsMapper extends RootMapper {
         return shopUnitImportRequest
                 .getItems()
                 .stream()
+                .peek(productValidator::validateShopUnitImport)
                 .map(v -> itemFromShopUnitImport(v, shopUnitImportRequest.getUpdateDate()))
                 .collect(Collectors.toList());
     }

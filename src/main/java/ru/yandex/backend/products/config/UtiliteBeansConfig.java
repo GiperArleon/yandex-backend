@@ -11,7 +11,7 @@ public class UtiliteBeansConfig {
 
     @Bean
     ProductsMapper productsMapper() {
-        return new ProductsMapper();
+        return new ProductsMapper(productValidator());
     }
 
     @Bean
