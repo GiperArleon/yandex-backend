@@ -9,8 +9,8 @@ import ru.yandex.backend.products.model.dto.GeneralResponse;
 import ru.yandex.backend.products.model.dto.ShopUnit;
 import ru.yandex.backend.products.model.dto.ShopUnitImportRequest;
 import ru.yandex.backend.products.model.dto.ShopUnitStatisticResponse;
+import ru.yandex.backend.products.service.HistoryService;
 import ru.yandex.backend.products.service.ProductsService;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -19,6 +19,7 @@ import java.util.UUID;
 public class ProductsController {
 
     private final ProductsService productsService;
+    private final HistoryService historyService;
 
     @GetMapping("/")
     public ResponseEntity<?> hello() {
@@ -29,6 +30,7 @@ public class ProductsController {
 
     @PostMapping("/imports")
     public ResponseEntity<GeneralResponse> importProducts(@RequestBody ShopUnitImportRequest shopUnitImportRequest) {
+        historyService.saveProductsHistory(shopUnitImportRequest);
         productsService.saveProducts(shopUnitImportRequest);
         return ResponseEntity.ok(GeneralResponse.getResponse(
                 "Imports done successfully",
@@ -40,6 +42,13 @@ public class ProductsController {
         return ResponseEntity.ok(productsService.getProductById(id));
     }
 
+    @GetMapping("/node/{id}/statistic")
+    public ResponseEntity<ShopUnitStatisticResponse> getUpdatedHistory(@PathVariable("id") UUID id,
+            @RequestParam(name="dateStart", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateStart,
+            @RequestParam(name="dateEnd", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateEnd) {
+        return ResponseEntity.ok(historyService.getUpdatedHistory(id, dateStart, dateEnd));
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<GeneralResponse> deleteProduct(@PathVariable("id") UUID id) {
         productsService.deleteProductById(id);
@@ -49,9 +58,8 @@ public class ProductsController {
     }
 
     @GetMapping("/sales")
-    public ResponseEntity<ShopUnitStatisticResponse> findSalesByDate(@RequestParam(required = false)
-                                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                                     LocalDateTime date) {
+    public ResponseEntity<ShopUnitStatisticResponse> findSalesByDate(@RequestParam(name="date", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
         return ResponseEntity.ok(productsService.findSalesByDate(date));
     }
 }

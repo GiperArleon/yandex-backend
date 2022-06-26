@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class ProductsMapper {
 
-    Item itemFromShopUnitImport(ShopUnitImport shopUnitImport, LocalDateTime updateTime) {
+    public Item itemFromShopUnitImport(ShopUnitImport shopUnitImport, LocalDateTime updateTime) {
         return new Item(
                 shopUnitImport.getId(),
                 shopUnitImport.getName(),
@@ -50,12 +50,12 @@ public class ProductsMapper {
                 .collect(Collectors.toList());
     }
 
-    private Long roundPrice(Double amount) {
+    public Long roundPrice(Double amount) {
         BigDecimal bigDecimal = new BigDecimal(amount).setScale(0, RoundingMode.DOWN);
         return bigDecimal.longValue();
     }
 
-    private void averagePriceCalc(Item item) {
+    public void averagePriceCalc(Item item) {
         if(item.getItemType() == ShopUnitType.CATEGORY) {
             Double price = item.getFlatChildrens()
                     .filter(v -> v.getItemType() == ShopUnitType.OFFER)
@@ -66,7 +66,7 @@ public class ProductsMapper {
         }
     }
 
-    private Item formatItem(Item item) {
+    public Item formatItem(Item item) {
         averagePriceCalc(item);
         LocalDateTime oldestDate = item.getChildrens().stream()
                 .map(this::formatItem)
@@ -76,7 +76,7 @@ public class ProductsMapper {
         return item;
     }
 
-    private ShopUnitStatisticUnit shopUnitStatisticUnitFromItem(Item item) {
+    public ShopUnitStatisticUnit shopUnitStatisticUnitFromItem(Item item) {
         return new ShopUnitStatisticUnit(
                 item.getItemId(),
                 item.getItemName(),

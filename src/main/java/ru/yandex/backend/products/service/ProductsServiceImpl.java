@@ -5,13 +5,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.backend.products.exceptions.ObjectNotFoundException;
 import ru.yandex.backend.products.mapper.ProductsMapper;
+import ru.yandex.backend.products.model.History;
 import ru.yandex.backend.products.model.Item;
 import ru.yandex.backend.products.model.dto.ShopUnit;
 import ru.yandex.backend.products.model.dto.ShopUnitImportRequest;
 import ru.yandex.backend.products.model.dto.ShopUnitStatisticResponse;
 import ru.yandex.backend.products.repository.ProductsRepository;
 import ru.yandex.backend.products.validation.ProductValidator;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 

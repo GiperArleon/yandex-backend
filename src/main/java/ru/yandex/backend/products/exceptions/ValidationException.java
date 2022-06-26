@@ -12,4 +12,9 @@ public class ValidationException extends RuntimeException {
         super(message);
         log.error("Ex: {} ", message);
     }
+
+    public ValidationException(String message, String originalMessage) {
+        super(message);
+        log.error("Ex: {} ", originalMessage);
+    }
 }

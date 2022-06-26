@@ -8,14 +8,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.yandex.backend.products.model.dto.GeneralResponse;
+import java.time.format.DateTimeParseException;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler
         extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {MappingException.class, ValidationException.class})
+    @ExceptionHandler(value = {MappingException.class,
+                               ValidationException.class,
+                               DateTimeParseException.class,
+                               IllegalArgumentException.class})
     protected ResponseEntity<Object> badRequest(RuntimeException ex, WebRequest request) {
-
         GeneralResponse rsp = GeneralResponse.getResponse(
                 ex.getMessage(),
                 HttpStatus.BAD_REQUEST);
