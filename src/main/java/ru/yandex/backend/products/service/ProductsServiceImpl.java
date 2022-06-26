@@ -24,6 +24,7 @@ import java.util.UUID;
 @Transactional
 public class ProductsServiceImpl implements ProductsService {
 
+    private static final long DAYS_SHIFT = 1;
     private final ProductsRepository productsRepository;
     private final ProductsMapper productsMapper;
     private final ProductValidator productValidator;
@@ -53,7 +54,7 @@ public class ProductsServiceImpl implements ProductsService {
         if(to == null) {
             to = ZonedDateTime.now();
         }
-        ZonedDateTime from = to.minusDays(1);
+        ZonedDateTime from = to.minusDays(DAYS_SHIFT);
         List<Item> items = productsRepository.findSalesByUpdateTime(from, to);
         return productsMapper.shopUnitStatisticResponseFromItems(items);
     }
