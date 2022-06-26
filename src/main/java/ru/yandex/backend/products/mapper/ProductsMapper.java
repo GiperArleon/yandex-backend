@@ -71,7 +71,8 @@ public class ProductsMapper extends RootMapper {
         ZonedDateTime oldestDate = item.getChildrens().stream()
                 .map(this::formatItem)
                 .map(Item::getUpdateTime)
-                .max(ZonedDateTime::compareTo).orElse(item.getUpdateTime());
+                .max(ZonedDateTime::compareTo)
+                .orElse(item.getUpdateTime());
         item.setUpdateTime(oldestDate);
         return item;
     }
