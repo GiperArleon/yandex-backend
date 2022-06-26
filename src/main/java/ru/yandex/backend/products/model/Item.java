@@ -49,6 +49,16 @@ public class Item {
         this.itemPrice = itemPrice;
     }
 
+    public Item(UUID itemId, String itemName, ZonedDateTime updateTime, UUID parentId, ShopUnitType itemType, Long itemPrice, List<Item> childrens) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.updateTime = updateTime;
+        this.parentId = parentId;
+        this.itemType = itemType;
+        this.itemPrice = itemPrice;
+        this.childrens = childrens;
+    }
+
     public Stream<Item> getFlatChildrens() {
         return Stream.concat(
                 Stream.of(this),

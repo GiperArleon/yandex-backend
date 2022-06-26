@@ -25,4 +25,13 @@ public class ShopUnit {
     private Long price;
 
     private List<ShopUnit> children;
+
+    public ShopUnit(UUID id, String name, ZonedDateTime date, UUID parentId, ShopUnitType type, Long price) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.parentId = parentId;
+        this.type = type;
+        this.price = price;
+    }
 }
