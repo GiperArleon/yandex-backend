@@ -7,7 +7,7 @@ import ru.yandex.backend.products.model.dto.ShopUnitStatisticUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HistoryMapper {
+public class HistoryMapper extends RootMapper {
 
     public History historyFromItem(Item item) {
         return new History(
@@ -27,7 +27,7 @@ public class HistoryMapper {
                 history.getParentId(),
                 history.getItemType(),
                 history.getItemPrice(),
-                history.getUpdateTime()
+                formatToUTC(history.getUpdateTime())
         );
     }
 

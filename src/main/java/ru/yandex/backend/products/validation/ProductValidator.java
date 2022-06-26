@@ -2,7 +2,7 @@ package ru.yandex.backend.products.validation;
 
 import ru.yandex.backend.products.exceptions.ValidationException;
 import ru.yandex.backend.products.model.dto.ShopUnitImportRequest;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 

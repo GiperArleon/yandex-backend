@@ -11,7 +11,7 @@ import ru.yandex.backend.products.model.dto.ShopUnitImportRequest;
 import ru.yandex.backend.products.model.dto.ShopUnitStatisticResponse;
 import ru.yandex.backend.products.service.HistoryService;
 import ru.yandex.backend.products.service.ProductsService;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @RestController
@@ -28,6 +28,24 @@ public class ProductsController {
                 HttpStatus.OK));
     }
 
+    @GetMapping("/nodes/{id}")
+    public ResponseEntity<ShopUnit> findProduct(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(productsService.getProductById(id));
+    }
+
+    @GetMapping("/node/{id}/statistic")
+    public ResponseEntity<ShopUnitStatisticResponse> getUpdatedHistory(@PathVariable("id") UUID id,
+            @RequestParam(name="dateStart", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime dateStart,
+            @RequestParam(name="dateEnd", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime dateEnd) {
+        return ResponseEntity.ok(historyService.getUpdatedHistory(id, dateStart, dateEnd));
+    }
+
+    @GetMapping("/sales")
+    public ResponseEntity<ShopUnitStatisticResponse> findSalesByDate(@RequestParam(name="date", required = false)
+                                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime date) {
+        return ResponseEntity.ok(productsService.findSalesByDate(date));
+    }
+
     @PostMapping("/imports")
     public ResponseEntity<GeneralResponse> importProducts(@RequestBody ShopUnitImportRequest shopUnitImportRequest) {
         historyService.saveProductsHistory(shopUnitImportRequest);
@@ -37,30 +55,12 @@ public class ProductsController {
                 HttpStatus.OK));
     }
 
-    @GetMapping("/nodes/{id}")
-    public ResponseEntity<ShopUnit> findProduct(@PathVariable("id") UUID id) {
-        return ResponseEntity.ok(productsService.getProductById(id));
-    }
-
-    @GetMapping("/node/{id}/statistic")
-    public ResponseEntity<ShopUnitStatisticResponse> getUpdatedHistory(@PathVariable("id") UUID id,
-            @RequestParam(name="dateStart", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateStart,
-            @RequestParam(name="dateEnd", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateEnd) {
-        return ResponseEntity.ok(historyService.getUpdatedHistory(id, dateStart, dateEnd));
-    }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<GeneralResponse> deleteProduct(@PathVariable("id") UUID id) {
         productsService.deleteProductById(id);
         return ResponseEntity.ok(GeneralResponse.getResponse(
                 "Delete done successfully",
                 HttpStatus.OK));
-    }
-
-    @GetMapping("/sales")
-    public ResponseEntity<ShopUnitStatisticResponse> findSalesByDate(@RequestParam(name="date", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
-        return ResponseEntity.ok(productsService.findSalesByDate(date));
     }
 }
 

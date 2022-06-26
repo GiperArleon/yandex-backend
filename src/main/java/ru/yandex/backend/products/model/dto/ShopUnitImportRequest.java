@@ -1,7 +1,7 @@
 package ru.yandex.backend.products.model.dto;
 
 import lombok.Data;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Data
@@ -9,5 +9,5 @@ public class ShopUnitImportRequest {
 
     private final List<ShopUnitImport> items;
 
-    private final LocalDateTime updateDate;
+    private final ZonedDateTime updateDate;
 }

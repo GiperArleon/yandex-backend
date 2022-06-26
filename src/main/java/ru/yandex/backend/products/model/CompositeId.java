@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Data
@@ -13,5 +13,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CompositeId implements Serializable {
     private UUID itemId;
-    private LocalDateTime updateTime;
+    private ZonedDateTime updateTime;
 }

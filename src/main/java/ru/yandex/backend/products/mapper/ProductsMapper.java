@@ -5,20 +5,20 @@ import ru.yandex.backend.products.model.dto.*;
 import ru.yandex.backend.products.model.enums.ShopUnitType;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProductsMapper {
+public class ProductsMapper extends RootMapper {
 
-    public Item itemFromShopUnitImport(ShopUnitImport shopUnitImport, LocalDateTime updateTime) {
+    public Item itemFromShopUnitImport(ShopUnitImport shopUnitImport, ZonedDateTime updateTime) {
         return new Item(
                 shopUnitImport.getId(),
                 shopUnitImport.getName(),
                 updateTime,
                 shopUnitImport.getParentId(),
                 shopUnitImport.getType(),
-                shopUnitImport.getPrice()
+                shopUnitImport.getType()==ShopUnitType.CATEGORY? null:shopUnitImport.getPrice()
         );
     }
 
@@ -35,7 +35,7 @@ public class ProductsMapper {
         return new ShopUnit(
                 item.getItemId(),
                 item.getItemName(),
-                item.getUpdateTime(),
+                formatToUTC(item.getUpdateTime()),
                 item.getParentId(),
                 item.getItemType(),
                 item.getItemPrice(),
@@ -68,10 +68,10 @@ public class ProductsMapper {
 
     public Item formatItem(Item item) {
         averagePriceCalc(item);
-        LocalDateTime oldestDate = item.getChildrens().stream()
+        ZonedDateTime oldestDate = item.getChildrens().stream()
                 .map(this::formatItem)
                 .map(Item::getUpdateTime)
-                .max(LocalDateTime::compareTo).orElse(item.getUpdateTime());
+                .max(ZonedDateTime::compareTo).orElse(item.getUpdateTime());
         item.setUpdateTime(oldestDate);
         return item;
     }
@@ -83,7 +83,7 @@ public class ProductsMapper {
                 item.getParentId(),
                 item.getItemType(),
                 item.getItemPrice(),
-                item.getUpdateTime()
+                formatToUTC(item.getUpdateTime())
                 );
      }
 

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.yandex.backend.products.model.Item;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,5 +17,5 @@ public interface ProductsRepository extends JpaRepository<Item, UUID>, CriteriaQ
                     "and v.update_time >= :from " +
                     "and v.update_time <= :to",
             nativeQuery = true)
-    List<Item> findSalesByUpdateTime(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
+    List<Item> findSalesByUpdateTime(@Param("from") ZonedDateTime from, @Param("to") ZonedDateTime to);
 }

@@ -14,7 +14,7 @@ import ru.yandex.backend.products.repository.ProductsRepository;
 import ru.yandex.backend.products.validation.ProductValidator;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
@@ -49,11 +49,11 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public ShopUnitStatisticResponse findSalesByDate(LocalDateTime to) {
+    public ShopUnitStatisticResponse findSalesByDate(ZonedDateTime to) {
         if(to == null) {
-            to = LocalDateTime.now();
+            to = ZonedDateTime.now();
         }
-        LocalDateTime from = to.minusDays(1);
+        ZonedDateTime from = to.minusDays(1);
         List<Item> items = productsRepository.findSalesByUpdateTime(from, to);
         return productsMapper.shopUnitStatisticResponseFromItems(items);
     }

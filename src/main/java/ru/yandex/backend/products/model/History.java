@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.yandex.backend.products.model.enums.ShopUnitType;
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
@@ -23,7 +23,7 @@ public class History {
     private String itemName;
 
     @Column(name = "update_time")
-    private LocalDateTime updateTime;
+    private ZonedDateTime updateTime;
 
     @Column(name = "parent_id")
     private UUID parentId;

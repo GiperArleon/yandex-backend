@@ -11,9 +11,7 @@ import ru.yandex.backend.products.model.dto.ShopUnitStatisticResponse;
 import ru.yandex.backend.products.repository.HistoryRepository;
 import ru.yandex.backend.products.repository.ProductsRepository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,14 +33,14 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public ShopUnitStatisticResponse getUpdatedHistory(UUID id, LocalDateTime dateStart, LocalDateTime dateEnd) {
-        if(dateStart == null) {
-            dateStart = LocalDateTime.of(LocalDate.EPOCH, LocalTime.MIN);
+    public ShopUnitStatisticResponse getUpdatedHistory(UUID id, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+        List<History> history;
+        if(dateStart == null || dateEnd == null) {
+           history = historyRepository.findFullHistory(id);
+        } else {
+           history = historyRepository.findHistoryByUpdateTime(id, dateStart, dateEnd);
         }
-        if(dateEnd == null) {
-            dateEnd = LocalDateTime.now();
-        }
-        List<History> history = historyRepository.findHistoryByUpdateTime(id, dateStart, dateEnd);
         return historyMapper.shopUnitStatisticResponseFromHistories(history);
     }
 }
+

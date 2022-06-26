@@ -4,7 +4,7 @@ import lombok.NoArgsConstructor;
 import ru.yandex.backend.products.model.enums.ShopUnitType;
 import lombok.Data;
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -22,7 +22,7 @@ public class Item {
     private String itemName;
 
     @Column(name = "update_time")
-    private LocalDateTime updateTime;
+    private ZonedDateTime updateTime;
 
     @Column(name = "parent_id")
     private UUID parentId;
@@ -40,7 +40,7 @@ public class Item {
                 referencedColumnName = "id", updatable = false)
     private List<Item> childrens;
 
-    public Item(UUID itemId, String itemName, LocalDateTime updateTime, UUID parentId, ShopUnitType itemType, Long itemPrice) {
+    public Item(UUID itemId, String itemName, ZonedDateTime updateTime, UUID parentId, ShopUnitType itemType, Long itemPrice) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.updateTime = updateTime;
